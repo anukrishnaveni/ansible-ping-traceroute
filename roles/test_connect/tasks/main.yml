@@ -1,15 +1,39 @@
 ---
-# - include: ping.yml
-# - include: traceroute.yml
+- name: Check if Java is already installed
+  command: java -version
+  register: java_check
+  ignore_errors: yes
 
-- name: Ping the host
-  ansible.builtin.ping:
+- name: Print existing Java version (if any)
+  debug:
+    msg: "{{ java_check.stderr_lines }}"
+  when: java_check.rc == 0
 
-- name: Display whoami
-  ansible.builtin.command: whoami
-  register: whoami_output
+- name: Install Java if not present
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+  when: java_check.rc != 0
 
-- name: Show logged-in user
-  ansible.builtin.debug:
-    msg: "Logged in as: {{ whoami_output.stdout }}"
+
+
+
+
+
+
+
+
+# # - include: ping.yml
+# # - include: traceroute.yml
+
+# - name: Ping the host
+#   ansible.builtin.ping:
+
+# - name: Display whoami
+#   ansible.builtin.command: whoami
+#   register: whoami_output
+
+# - name: Show logged-in user
+#   ansible.builtin.debug:
+#     msg: "Logged in as: {{ whoami_output.stdout }}"
 
