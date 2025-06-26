@@ -1,15 +1,15 @@
-- name: Traceroute executing
-  shell: "{{ traceroute_command }} {{ item }}"
-  loop: "{{ groups['targets'] }}"
-  register: command_output
-  ignore_errors: yes
-  no_log: true
-  changed_when: false
+# - name: Traceroute executing
+#   shell: "{{ traceroute_command }} {{ item }}"
+#   loop: "{{ groups['targets'] }}"
+#   register: command_output
+#   ignore_errors: yes
+#   no_log: true
+#   changed_when: false
 
-- name: Traceroute report
-  debug: 
-    msg: "{{ item.stdout.split('\n') }}"
-  when: item.rc == 0
-  loop: "{{ command_output.results }}"
-  loop_control: 
-    label: "{{ item.cmd }}"
+# - name: Traceroute report
+#   debug: 
+#     msg: "{{ item.stdout.split('\n') }}"
+#   when: item.rc == 0
+#   loop: "{{ command_output.results }}"
+#   loop_control: 
+#     label: "{{ item.cmd }}"
