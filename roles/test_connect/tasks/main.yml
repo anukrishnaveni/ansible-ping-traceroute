@@ -1,20 +1,32 @@
----
-- name: Check if Java is already installed
-  shell: java -version                         # ✅ uses shell for PATH resolution
-  register: java_check
-  ignore_errors: yes
+- name: Install OpenJDK 17 on CentOS
+  hosts: centos_vm
+  become: true
+  tasks:
 
-- name: Print existing Java version (if installed)
-  debug:
-    msg: "{{ java_check.stderr_lines | default(['Java not installed']) }}"
-  when: java_check.rc == 0
+    - name: Update yum cache
+      yum:
+        update_cache: yes
 
-- name: Install Java if not present
-  become: true                                 # ✅ ADDED to run yum as root
-  yum:
-    name: "{{ java_package }}"
-    state: present
-  when: java_check.rc != 0
+    - name: Install latest OpenJDK 17
+      yum:
+        name: java-17-openjdk
+        state: present
+
+    - name: Install OpenJDK 17 Development Tools (optional)
+      yum:
+        name: java-17-openjdk-devel
+        state: present
+
+    - name: Verify Java installation
+      command: java -version
+      register: java_output
+      changed_when: false
+      ignore_errors: true
+
+    - name: Display Java version
+      debug:
+        msg: "{{ java_output.stdout_lines }}"
+
 
 
 
