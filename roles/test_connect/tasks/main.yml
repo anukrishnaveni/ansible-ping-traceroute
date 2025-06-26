@@ -1,41 +1,26 @@
-- name: Install OpenJDK 17 on CentOS
-  hosts: centos_vm
-  become: true
-  tasks:
+- name: Update yum cache
+  yum:
+    update_cache: yes
 
-    - name: Update yum cache
-      yum:
-        update_cache: yes
+- name: Install latest OpenJDK 17
+  yum:
+    name: java-17-openjdk
+    state: present
 
-    - name: Install latest OpenJDK 17
-      yum:
-        name: java-17-openjdk
-        state: present
+- name: Install OpenJDK 17 Development Tools (optional)
+  yum:
+    name: java-17-openjdk-devel
+    state: present
 
-    - name: Install OpenJDK 17 Development Tools (optional)
-      yum:
-        name: java-17-openjdk-devel
-        state: present
+- name: Verify Java installation
+  command: java -version
+  register: java_output
+  changed_when: false
+  ignore_errors: true
 
-    - name: Verify Java installation
-      command: java -version
-      register: java_output
-      changed_when: false
-      ignore_errors: true
-
-    - name: Display Java version
-      debug:
-        msg: "{{ java_output.stdout_lines }}"
-
-
-
-
-
-
-
-
-
-
+- name: Display Java version
+  debug:
+    msg: "{{ java_output.stderr_lines | default(java_output.stdout_lines) }}"
 
 
 # # - include: ping.yml
