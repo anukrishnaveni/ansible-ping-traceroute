@@ -1,3 +1,5 @@
 user: krishnaveni
+java_package: java-1.8.0-openjdk
+
 # ping_command: ping -c 1 -q -W 1 
 # traceroute_command: traceroute -m 10
