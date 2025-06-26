@@ -1,6 +1,6 @@
 ---
 - name: Check if Java is already installed
-  command: java -version
+  shell: java -version
   register: java_check
   ignore_errors: yes
 
