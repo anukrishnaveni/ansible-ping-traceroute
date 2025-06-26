@@ -1,3 +1,15 @@
 ---
-- include: ping.yml
-- include: traceroute.yml
+# - include: ping.yml
+# - include: traceroute.yml
+
+- name: Ping the host
+  ansible.builtin.ping:
+
+- name: Display whoami
+  ansible.builtin.command: whoami
+  register: whoami_output
+
+- name: Show logged-in user
+  ansible.builtin.debug:
+    msg: "Logged in as: {{ whoami_output.stdout }}"
+
