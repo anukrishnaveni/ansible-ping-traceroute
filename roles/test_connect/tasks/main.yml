@@ -1,27 +1,20 @@
+---
 - name: Update yum cache
   yum:
     update_cache: yes
+    use_backend: dnf
 
 - name: Install latest OpenJDK 17
   yum:
     name: java-17-openjdk
     state: present
+    use_backend: dnf
 
 - name: Install OpenJDK 17 Development Tools (optional)
   yum:
     name: java-17-openjdk-devel
     state: present
-
-- name: Verify Java installation
-  command: java -version
-  register: java_output
-  changed_when: false
-  ignore_errors: true
-
-- name: Display Java version
-  debug:
-    msg: "{{ java_output.stderr_lines | default(java_output.stdout_lines) }}"
-
+    use_backend: dnf
 
 # # - include: ping.yml
 # # - include: traceroute.yml
