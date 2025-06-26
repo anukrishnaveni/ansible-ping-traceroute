@@ -1,5 +1,4 @@
 ---
----
 - name: Check if Java is already installed
   shell: java -version                          # ✅ Changed from 'command' to 'shell'
   register: java_check
