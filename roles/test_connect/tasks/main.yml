@@ -1,19 +1,21 @@
 ---
 - name: Check if Java is already installed
-  shell: java -version                          # ✅ Changed from 'command' to 'shell'
+  shell: java -version                         # ✅ uses shell for PATH resolution
   register: java_check
   ignore_errors: yes
 
 - name: Print existing Java version (if installed)
   debug:
-    msg: "{{ java_check.stderr_lines | default(['Java not installed']) }}"  # ✅ Added default to avoid undefined errors
+    msg: "{{ java_check.stderr_lines | default(['Java not installed']) }}"
   when: java_check.rc == 0
 
 - name: Install Java if not present
+  become: true                                 # ✅ ADDED to run yum as root
   yum:
-    name: "{{ java_package }}"                  # ✅ Replaced hardcoded package with variable
+    name: "{{ java_package }}"
     state: present
   when: java_check.rc != 0
+
 
 
 
